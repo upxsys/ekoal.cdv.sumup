@@ -11,7 +11,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.ionicframework.sumuptester744401.MainActivity;
 import com.sumup.android.logging.Log;
 import com.sumup.merchant.api.SumUpAPI;
 import com.sumup.merchant.api.SumUpPayment;
@@ -32,11 +31,6 @@ public class sumup extends CordovaPlugin {
         }
       });
 
-        //Context context=this.cordova.getActivity().getApplicationContext();
-        //Intent intent=new Intent(context,suPActivity.class);
-        //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        //context.startActivity(intent);
-
         if (action.equals("pay")) {
             //CURRENCY CONVERSION
             SumUpPayment payment = SumUpPayment.builder()
@@ -45,24 +39,14 @@ public class sumup extends CordovaPlugin {
                     .affiliateKey(this.cordova.getActivity().getString(R.string.SUMUP_API_KEY))
                     .productAmount(Double.parseDouble(args.get(0).toString()))
                     .currency(SumUpPayment.Currency.valueOf(args.get(1).toString()))
-                            // optional: add details
-                            //.productTitle("Taxi Ride").receiptEmail("customer@mail.com").receiptSMS("+3531234567890")
-                            // optional: Add metadata
-                            //.addAdditionalInfo("AccountId", "taxi0334")
-                            //.addAdditionalInfo("From", "Paris")
-                            //.addAdditionalInfo("To", "Berlin")
-                            // optional: foreign transaction ID, must be unique!
                             .foreignTransactionId(UUID.randomUUID().toString()) // can not exceed 128 chars
                             .build();
 
 
 
-            //(suPActivity).se
-            //((MainActivity)this.cordova.getActivity()).setCallback(callbackContext);
             SumUpAPI.openPaymentActivity(this.cordova.getActivity(), payment, 1);
             return true;
         }
-        //this.echo("false",callbackContext);
         return false;
     }
 
