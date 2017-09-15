@@ -60,5 +60,6 @@
     <config-file target="./res/values/strings.xml" parent="/resources">
       <string name="SUMUP_API_KEY">$SUMUP_API_KEY</string>
     </config-file>
+    <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
   </platform>
 </plugin>

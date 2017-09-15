@@ -1,0 +1,9 @@
+repositories {
+    maven { url 'https://maven.sumup.com/releases' }
+}
+
+dependencies {
+    compile('com.sumup:merchant-sdk:2.2.0@aar') {
+        transitive = true
+    }
+}
