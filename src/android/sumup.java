@@ -1,10 +1,15 @@
 package org.apache.cordova.sumup;
 
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.sumup.merchant.api.SumUpAPI;
 import com.sumup.merchant.api.SumUpPayment;
@@ -19,12 +24,9 @@ public class sumup extends CordovaPlugin {
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 
         if (action.equals("pay")) {
-            //CURRENCY CONVERSION
             int affKey = this.cordova.getActivity().getResources().getIdentifier("SUMUP_API_KEY", "string", this.cordova.getActivity().getPackageName());
             SumUpPayment payment = SumUpPayment.builder()
-                    // mandatory parameters
                     // Your affiliate key is bound to the applicationID entered in the SumUp dashboard at https://me.sumup.com/integration-tools
-
                     .affiliateKey(this.cordova.getActivity().getResources().getString(affKey))
                     .productAmount(Double.parseDouble(args.get(0).toString()))
                     .currency(SumUpPayment.Currency.valueOf(args.get(1).toString()))
