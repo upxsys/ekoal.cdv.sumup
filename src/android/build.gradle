@@ -3,7 +3,7 @@ repositories {
 }
 
 dependencies {
-    compile('com.sumup:merchant-sdk:2.2.0@aar') {
+    compile('com.sumup:merchant-api:1.2.0') {
         transitive = true
     }
 }

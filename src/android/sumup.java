@@ -35,6 +35,7 @@ public class sumup extends CordovaPlugin {
                     .productAmount(Double.parseDouble(args.get(0).toString()))
                     .currency(SumUpPayment.Currency.valueOf(args.get(1).toString()))
                     .foreignTransactionId(UUID.randomUUID().toString()) // can not exceed 128 chars
+                    .skipSuccessScreen()
                     .build();
 
 
