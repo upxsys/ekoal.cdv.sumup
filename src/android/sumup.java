@@ -8,21 +8,15 @@ import org.json.JSONException;
 
 import com.sumup.merchant.api.SumUpAPI;
 import com.sumup.merchant.api.SumUpPayment;
-import com.sumup.merchant.api.SumUpState;
 
 import java.util.UUID;
 
 public class sumup extends CordovaPlugin {
+
+    private CallbackContext callback = null;
     //
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-
-
-        this.cordova.getActivity().runOnUiThread(new Runnable() {
-            public void run() {
-                SumUpState.init(cordova.getActivity());
-            }
-        });
 
         if (action.equals("pay")) {
             //CURRENCY CONVERSION
@@ -38,6 +32,8 @@ public class sumup extends CordovaPlugin {
                     .skipSuccessScreen()
                     .build();
 
+            this.callback = callbackContext;
+            this.cordova.setActivityResultCallback(this);
 
             SumUpAPI.openPaymentActivity(this.cordova.getActivity(), payment, 1);
             return true;
@@ -45,14 +41,29 @@ public class sumup extends CordovaPlugin {
         return false;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Bundle extras = data.getExtras();
 
-    private void echo(String message, CallbackContext callbackContext) {
-        if (message != null && message.length() > 0) {
-            callbackContext.success(message);
-        } else {
-            callbackContext.error("Expected one non-empty string argument.");
+        String code = "";
+        String txcode = "";
+        String message = "";
+        if (extras != null) {
+            message = "" + extras.getString(SumUpAPI.Response.MESSAGE);
+            txcode = "" + extras.getString(SumUpAPI.Response.TX_CODE);
+            code = "" + extras.getInt(SumUpAPI.Response.RESULT_CODE);
         }
-    }
 
+        JSONObject res = new JSONObject();
+        try {
+            res.put("code", code);
+            res.put("message", message);
+            res.put("txcode", txcode);
+        } catch (Exception e) {}
+
+        PluginResult result = new PluginResult(PluginResult.Status.OK, res);
+        result.setKeepCallback(true);
+        this.callback.sendPluginResult(result);
+    }
 }
 
