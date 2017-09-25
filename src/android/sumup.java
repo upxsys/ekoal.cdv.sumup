@@ -58,7 +58,7 @@ public class sumup extends CordovaPlugin {
             }
         } else {
             message = "Sumup app returned no response";
-            code = "-1"
+            code = "-1";
         }
         JSONObject res = new JSONObject();
         try {
