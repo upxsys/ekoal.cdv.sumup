@@ -45,17 +45,21 @@ public class sumup extends CordovaPlugin {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Bundle extras = data.getExtras();
-
-        String code = "";
+        String code = "0";
         String txcode = "";
-        String message = "";
-        if (extras != null) {
-            message = "" + extras.getString(SumUpAPI.Response.MESSAGE);
-            txcode = "" + extras.getString(SumUpAPI.Response.TX_CODE);
-            code = "" + extras.getInt(SumUpAPI.Response.RESULT_CODE);
-        }
+        String message = "Empty";
 
+        if( data != null ){
+            Bundle extras = data.getExtras();
+            if (extras != null) {
+                message = "" + extras.getString(SumUpAPI.Response.MESSAGE);
+                txcode = "" + extras.getString(SumUpAPI.Response.TX_CODE);
+                code = "" + extras.getInt(SumUpAPI.Response.RESULT_CODE);
+            }
+        } else {
+            message = "Sumup app returned no response";
+            code = "-1"
+        }
         JSONObject res = new JSONObject();
         try {
             res.put("code", code);
